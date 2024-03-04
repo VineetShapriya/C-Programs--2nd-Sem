@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+struct List {
+    int arr[MAX_SIZE];
+    int size;
+};
+
+void initialize(struct List *list) {
+    list->size = 0;
+}
+
+int linearSearch(struct List *list, int key) {
+    for (int i = 0; i < list->size; i++) {
+        if (list->arr[i] == key) {
+            return i; 
+        }
+    }
+    return -1; 
+}
+
+void insert(struct List *list, int element) {
+    if (list->size < MAX_SIZE) {
+        list->arr[list->size] = element;
+        list->size++;
+        printf("Element %d inserted successfully.\n", element);
+    } else {
+        printf("List is full. Cannot insert element.\n");
+    }
+}
+
+void delete(struct List *list, int element) {
+    int index = linearSearch(list, element);
+    if (index != -1) {
+        for (int i = index; i < list->size - 1; i++) {
+            list->arr[i] = list->arr[i + 1];
+        }
+        list->size--;
+        printf("Element %d deleted successfully.\n", element);
+    } else {
+        printf("Element %d not found in the list.\n", element);
+    }
+}
+
+int main() {
+    struct List list;
+    initialize(&list);
+
+    insert(&list, 5);
+    insert(&list, 10);
+    insert(&list, 15);
+
+    printf("List elements: ");
+    for (int i = 0; i < list.size; i++) {
+        printf("%d ", list.arr[i]);
+    }
+    printf("\n");
+
+    int searchKey = 10;
+    int searchResult = linearSearch(&list, searchKey);
+    if (searchResult != -1) {
+        printf("%d found at index %d.\n", searchKey, searchResult);
+    } else {
+        printf("%d not found in the list.\n", searchKey);
+    }
+
+    delete(&list, 10);
+
+    printf("List elements after deletion: ");
+    for (int i = 0; i < list.size; i++) {
+        printf("%d ", list.arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
